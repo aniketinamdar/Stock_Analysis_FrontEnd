@@ -10,42 +10,42 @@ function selectAnalysis()
 
     switch(action) {
         case 'fundamental':
-            displayFundamentalAnalysisForm(resultsDiv);
+            displayFundamentalAnalysisForm(resultsDiv, stockSymbol, exchange);
             break;
         case 'technical':
             displayTechnicalAnalysisForm(resultsDiv);
             break;
         case 'intraday':
-            displayIntradayForm(resultsDiv);
+            displayIntradayForm(resultsDiv, stockSymbol, exchange);
             break;
         case 'swing':
-            displaySwingForm(resultsDiv);
+            displaySwingForm(resultsDiv, stockSymbol, exchange);
             break;
     }
 };
 
-function displayFundamentalAnalysisForm(container){
-    container.innerHTML =`
-    <div>[Display 4 paragraphs of fundamental analysis text here]</div>
-    `;
+async function displayFundamentalAnalysisForm(container, stockSymbol, exchange){
+    const response = await fetch(`http://127.0.0.1:4000/fundamental?stk=${stockSymbol}&exc=${exchange}`);
+    const result = await response.text();
+    container.innerHTML =`<div>${result}</div>`;
 };
 
 async function technical_analysis() {
-    var inputElement = document.getElementById('chartImage');
-    var selectedImage = inputElement.files[0];
+    var stockSymbol = document.getElementById('stock').value;
+    var exchange = document.getElementById('exchange').value;
+    const inputElement = document.getElementById('chartImage');
+    const timeFrame = document.getElementById('timeFrame').value;
+    const selectedImage = inputElement.files[0];
 
     if (selectedImage) {
-        var formData = new FormData();
+        const formData = new FormData();
         formData.append('chartImage', selectedImage);
 
-        var result_string = "";
+        const result_string = "";
 
-        const response = await fetch('http://127.0.0.1:4000/technical', {
+        const response = await fetch(`http://127.0.0.1:4000/technical?stk=${stockSymbol}&exc=${exchange}&tmf=${timeFrame}`, {
             method: 'POST',
-            body: formData,
-            headers: {
-                'Content-Type': 'image/png'
-            }
+            body: formData
         });
         const result = await response.text();
         document.getElementById('technicalResults').innerHTML = `<div>${result}</div>`;
@@ -86,14 +86,14 @@ function displayTechnicalAnalysisForm(container) {
     `;
 }
 
-function displayIntradayForm(container) {
-    container.innerHTML = `
-        <div>[Display intraday entry stop loss targets risk reward ratio]</div>
-        `;
+async function displayIntradayForm(container, stockSymbol, exchange) {
+    const response = await fetch(`http://127.0.0.1:4000/positions?stk=${stockSymbol}&exc=${exchange}&pmt=intra`);
+    const result = await response.text();
+    container.innerHTML = `<div>${result}</div>`;
 }
 
-function displaySwingForm(container) {
-    container.innerHTML = `
-        <div>[Display swing entry stop loss targets risk reward ratio]</div>
-        `;
+async function displaySwingForm(container, stockSymbol, exchange) {
+    const response = await fetch(`http://127.0.0.1:4000/positions?stk=${stockSymbol}&exc=${exchange}&pmt=swing`);
+    const result = await response.text();
+    container.innerHTML = `<div>${result}</div>`;
 }
