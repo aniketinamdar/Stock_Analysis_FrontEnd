@@ -30,11 +30,29 @@ function displayFundamentalAnalysisForm(container){
     `;
 };
 
-function technical_analysis() {
-        document.getElementById('technicalResults').innerHTML = `
-        <div>[Display 2-3 paragraphs of technical analysis text here]</div>
-        `;
-    };
+async function technical_analysis() {
+    var inputElement = document.getElementById('chartImage');
+    var selectedImage = inputElement.files[0];
+
+    if (selectedImage) {
+        var formData = new FormData();
+        formData.append('chartImage', selectedImage);
+
+        var result_string = "";
+
+        const response = await fetch('http://127.0.0.1:4000/technical', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Content-Type': 'image/png'
+            }
+        });
+        const result = await response.text();
+        document.getElementById('technicalResults').innerHTML = `<div>${result}</div>`;
+    } else {
+        console.log('No image selected');
+    }
+};
 
 function displayTechnicalAnalysisForm(container) {
     container.innerHTML = `
