@@ -25,7 +25,7 @@ function selectAnalysis()
 };
 
 async function displayFundamentalAnalysisForm(container, stockSymbol, exchange){
-    const response = await fetch(`https://stonk-anal.onrender.com/fundamental?stk=${stockSymbol}&exc=${exchange}`);
+    const response = await fetch(`https://cf0ebb89-401f-4c17-93ed-ce66790377f8-00-21i5m8412bdrv.sisko.repl.co/fundamental?stk=${stockSymbol}&exc=${exchange}`);
     const result = await response.text();
     container.innerHTML =`<div>${result}</div>`;
 };
@@ -43,7 +43,7 @@ async function technical_analysis() {
 
         const result_string = "";
 
-        const response = await fetch(`https://stonk-anal.onrender.com/technical?stk=${stockSymbol}&exc=${exchange}&tmf=${timeFrame}`, {
+        const response = await fetch(`https://cf0ebb89-401f-4c17-93ed-ce66790377f8-00-21i5m8412bdrv.sisko.repl.co/technical?stk=${stockSymbol}&exc=${exchange}&tmf=${timeFrame}`, {
             method: 'POST',
             body: formData
         });
@@ -87,13 +87,13 @@ function displayTechnicalAnalysisForm(container) {
 }
 
 async function displayIntradayForm(container, stockSymbol, exchange) {
-    const response = await fetch(`https://stonk-anal.onrender.com/positions?stk=${stockSymbol}&exc=${exchange}&pmt=intra`);
+    const response = await fetch(`https://cf0ebb89-401f-4c17-93ed-ce66790377f8-00-21i5m8412bdrv.sisko.repl.co/positions?stk=${stockSymbol}&exc=${exchange}&pmt=intra`);
     const result = await response.text();
     container.innerHTML = `<div>${result}</div>`;
 }
 
 async function displaySwingForm(container, stockSymbol, exchange) {
-    const response = await fetch(`https://stonk-anal.onrender.com/positions?stk=${stockSymbol}&exc=${exchange}&pmt=swing`);
+    const response = await fetch(`https://cf0ebb89-401f-4c17-93ed-ce66790377f8-00-21i5m8412bdrv.sisko.repl.co/positions?stk=${stockSymbol}&exc=${exchange}&pmt=swing`);
     const result = await response.text();
     container.innerHTML = `<div>${result}</div>`;
 }
